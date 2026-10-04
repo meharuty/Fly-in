@@ -221,11 +221,6 @@ class MapParser:
             zone,
         )
 
-        ZoneValidator.unique_coordinates(
-            self._zones,
-            zone,
-        )
-
         self._zones[zone.name] = zone
 
         if kind == "start_hub":

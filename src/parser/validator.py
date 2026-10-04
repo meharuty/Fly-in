@@ -75,25 +75,6 @@ class ZoneValidator:
                 f"Duplicate zone name '{zone.name}'"
             )
 
-    @staticmethod
-    def unique_coordinates(
-        zones: dict[str, Zone],
-        zone: Zone,
-    ) -> None:
-        """Ensure no zone already occupies the same coordinates."""
-        for existing_zone in zones.values():
-            if (
-                existing_zone.x,
-                existing_zone.y,
-            ) == (
-                zone.x,
-                zone.y,
-            ):
-                raise ValueError(
-                    "Duplicate zone coordinates "
-                    f"({zone.x}, {zone.y})"
-                )
-
 
 class ConnectionValidator:
     """Validation rules for connection definitions."""

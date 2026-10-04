@@ -98,8 +98,7 @@ class TerminalVisualizer:
     # ---------- frame construction ----------
 
     def _build_frames(self) -> list[Frame]:
-        """Replay history; a move not ending 
-        at its destination is in flight."""
+        """Replay history; a move not ending at its goal is in flight."""
         frames: list[Frame] = []
         history = self.simulation.history
         for index, moves in enumerate(history):
@@ -197,20 +196,24 @@ class TerminalVisualizer:
         else:
             counts[self.network.start.name] = self.simulation_drones()
         width = max(len(z.name) for z in zones) + 7
-        cells: dict[tuple[int, int], Zone] = {
-            (xs.index(z.x), ys.index(z.y)): z for z in zones
-        }
+        cells: dict[tuple[int, int], Zone] = {}
+        for z in zones:
+            col, row = xs.index(z.x), ys.index(z.y)
+            while (col, row) in cells:
+                col += 1
+            cells[(col, row)] = z
+        n_cols = max(col for col, _ in cells) + 1
         rows = []
         for row in range(len(ys)):
             parts = []
-            for col in range(len(xs)):
-                zone = cells.get((col, row))
-                if zone is None:
+            for col in range(n_cols):
+                cell = cells.get((col, row))
+                if cell is None:
                     parts.append(" " * width)
                     continue
-                count = counts[zone.name]
-                text = self._label(zone, count).center(width)
-                code = self.painter.code_for(zone.color)
+                count = counts[cell.name]
+                text = self._label(cell, count).center(width)
+                code = self.painter.code_for(cell.color)
                 if count:
                     code = f"1;{code}" if code else "1"
                 parts.append(self.painter.paint(text, code))
