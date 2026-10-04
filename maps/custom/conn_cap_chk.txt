@@ -1,0 +1,13 @@
+nb_drones: 3
+
+start_hub: hub 0 0
+end_hub: goal 10 10
+
+hub: normalA 2 2
+hub: normalB 4 4
+
+connection: hub-normalA [max_link_capacity=1]
+connection: normalA-goal [max_link_capacity=1]
+
+connection: hub-normalB [max_link_capacity=2]
+connection: normalB-goal [max_link_capacity=2]
